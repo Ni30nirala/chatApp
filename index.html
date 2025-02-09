@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Chat App</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #chat-container { width: 300px; margin: 0 auto; }
+    #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; }
+    #messageInput { width: 100%; margin: 5px 0; }
+    #sendButton { width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button id="sendButton">Send</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.database();
+
+    // Function to send a message
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value;
+      db.ref('messages').push().set({
+        message: message,
+        timestamp: Date.now()
+      });
+      messageInput.value = '';
+    }
+
+    // Event listener
+    document.getElementById('sendButton').addEventListener('click', sendMessage);
+
+    // Function to display messages
+   ').on('child_added', (snapshot) => {
+      const message = snapshot.val();
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML += `<p>${message.message}</p>`;
+    });
+  </script>
+</body>
+</html>
